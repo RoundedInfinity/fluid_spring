@@ -33,7 +33,7 @@ class _FluidBuilderDemoState extends State<FluidBuilderDemo> {
           child: Container(
             height: 600,
             width: 500,
-            color: Theme.of(context).colorScheme.surfaceVariant,
+            color: Theme.of(context).colorScheme.surfaceContainerHighest,
             child: FluidTransitionBuilder(
               value: _alignment,
               spring: FluidSpring.bouncy,
@@ -54,7 +54,7 @@ class _FluidBuilderDemoState extends State<FluidBuilderDemo> {
             ),
           ),
         ),
-        ButtonBar(
+        OverflowBar(
           children: [
             FilledButton(
               onPressed: () {

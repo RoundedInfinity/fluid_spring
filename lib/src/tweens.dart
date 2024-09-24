@@ -1,7 +1,42 @@
 import 'dart:ui';
 
 import 'package:fluid_animations/fluid_animations.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/physics.dart';
 import 'package:flutter/widgets.dart';
+
+/// Transforms the value of the given animation by the given spring.
+///
+/// See also:
+/// - [SpringDescription] used to describe the spring
+/// - [CurveTween] same as this but for curves.
+class SpringTween extends Animatable<double> {
+  /// Creates a spring tween.
+  SpringTween({required this.spring, double velocity = 0})
+      : _simulation = SpringSimulation(spring, 0, 1, velocity);
+
+  /// The spring used for this tween.
+  SpringDescription spring;
+
+  final SpringSimulation _simulation;
+
+  @override
+  double transform(double t) {
+    if (t == 0.0 || t == 1.0) {
+      assert(
+        _simulation.x(t).round() == t,
+        'Finished simulation should equal 1',
+      );
+      return t;
+    }
+
+    return _simulation.x(t);
+  }
+
+  @override
+  String toString() =>
+      '${objectRuntimeType(this, 'SpringTween')}(spring: $spring)';
+}
 
 /// A non-linear interpolation between two alignments using two separate spring
 /// animations.
@@ -58,7 +93,6 @@ class FluidAlignmentTween extends Tween<Alignment> {
 /// See also:
 /// - [SpringSimulation2D], which is responsible for simulating two springs.
 /// - [FluidAlignmentTween], similar to this but for Alignment.
-
 class FluidOffsetTween extends Tween<Offset> {
   /// Creates an Offset tween that is driven by a [SpringSimulation2D].
   ///
